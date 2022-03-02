@@ -9,29 +9,36 @@ zycia = 10
 haslo = input('Wpisz haslo do zgadniecia:').lower()
 hasloTemp = ([litery for litery in haslo])
 hasloDoZgadniecia = (['_' for litery in haslo])
-uzyteLitery={}
+uzyteLitery= set()
 zleLitery=[]
+
 
 
 def zgadniecie():
     global zycia
     global uzyteLitery
+
+
+    dlugoscPrzedPobraniemLitery = len(uzyteLitery)
     czyJestLiterka = False
     zgadula = input('Zgadnij literke: ')
-    if len(zgadula) == 1:
-        index = 0
-        while index < len(haslo):
-            index = haslo.find(zgadula, index)
-            if index == -1:
+    if zgadula.isalpha() == True:
+        uzyteLitery.add(zgadula)
+        dlugoscPoPobraniuLitery = len(uzyteLitery)
+        if dlugoscPoPobraniuLitery != dlugoscPrzedPobraniemLitery:
+            if len(zgadula) == 1:
+                index = 0
+                while index < len(haslo):
+                    index = haslo.find(zgadula, index)
+                    if index == -1:
+                        break
+                    czyJestLiterka = True
+                    hasloDoZgadniecia[index] = zgadula
+                    index += 1
+
+            if (czyJestLiterka == False):
+                zycia -= 1
                 zleLitery.append(zgadula)
-                break
-            czyJestLiterka = True
-            hasloDoZgadniecia[index] = zgadula
-            index += 1
-
-    if (czyJestLiterka == False):
-        zycia -= 1
-
 
 def czy_wygrana():
     global gra
@@ -46,7 +53,10 @@ def czy_wygrana():
 while gra == True:
     print('Ilosc zyc: ', zycia)
     print('Nieprawidlowe litery: ', zleLitery)
-    print('Uzyte litery: ', uzyteLitery)
+    if len(uzyteLitery) > 0:
+        print('Uzyte litery: ', uzyteLitery)
+    else:
+        print('Uzyte litery: ')
     print('Haslo do zgadniecia: ', hasloDoZgadniecia)
     zgadniecie()
     print(hasloTemp)
